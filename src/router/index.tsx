@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../layouts/main";
 import WelcomePage from "../modules/welcome/page";
+import RadioPage from "../modules/radioGroup/page";
 
 export const router = createBrowserRouter([
   {
@@ -9,6 +10,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         Component: WelcomePage,
+      },
+      {
+        path: "/radio",
+        Component: RadioPage,
       },
     ],
   },
