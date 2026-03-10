@@ -1,16 +1,17 @@
 import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Radio, type RadioGroupProps } from "antd";
+import { Button, Card, Radio, type RadioGroupProps } from "antd";
 import { Component, type ReactNode } from "react";
 
-interface RadioItem<T> {
-  key: T;
-  children: ReactNode;
+interface Lookup {
+  code: string | null;
+  label: ReactNode | null;
+  opt: string | null;
 }
 
-interface Props<T> extends RadioGroupProps {
-  value: RadioItem<T>[];
-  itemVal: T;
-  itemsCount?: number | null;
+interface Props extends RadioGroupProps {
+  items: Lookup[];
+  selected: string | null;
+  showItem?: number | null;
   headerContent: ReactNode;
 }
 
@@ -18,8 +19,8 @@ interface State {
   isVisible: boolean;
 }
 
-class RadioGroup<T> extends Component<Props<T>, State> {
-  constructor(props: Props<T>) {
+class RadioGroup extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       isVisible: false,
@@ -28,33 +29,32 @@ class RadioGroup<T> extends Component<Props<T>, State> {
 
   render() {
     const { isVisible } = this.state;
-    const { value, itemsCount, headerContent, ...props } = this.props;
+    const { items, showItem, headerContent, ...props } = this.props;
 
-    const item =
-      isVisible || !itemsCount ? value : value.slice(0, itemsCount ?? 2);
+    const item: Lookup[] =
+      isVisible || !showItem ? items : items.slice(0, showItem ?? 2);
 
     return (
-      <Col>
+      <div className="flex flex-col gap-4">
         {headerContent}
         <Radio.Group {...props} vertical>
           {item.map((item) => (
             <Card
-              key={String(item.key)}
+              key={item.code}
               classNames={{ body: "bg-green-200" }}
-              onClick={() => console.log(item.key)}
               style={{ cursor: "pointer" }}
             >
-              <Radio value={item.key}>{item.children}</Radio>
+              <Radio value={item.code}>{item.label}</Radio>
             </Card>
           ))}
 
-          {itemsCount && (
+          {showItem && (
             <Button onClick={() => this.setState({ isVisible: !isVisible })}>
               {isVisible ? <UpOutlined /> : <DownOutlined />}
             </Button>
           )}
         </Radio.Group>
-      </Col>
+      </div>
     );
   }
 }

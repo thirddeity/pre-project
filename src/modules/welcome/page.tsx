@@ -12,13 +12,18 @@ class WelcomeComponent extends Component<Props> {
   };
 
   private onFinish = (form: FormValues) => {
-    const result = { date: dayjs(form.date).toISOString() };
+    const result = {
+      date1: dayjs(form.date1).toISOString(),
+      date2: dayjs(form.date2).toISOString(),
+      date3: dayjs(form.date3).toISOString(),
+      date4: dayjs(form.date4).toISOString(),
+    };
     console.log("form submit =>", result);
   };
 
   private handleReset = () => {
     const { form } = this.props;
-    form.setFieldsValue({ date: dayjs() });
+    form.setFieldsValue({ date1: dayjs(), date2: dayjs(), date3: dayjs(), date4: dayjs() });
   };
 
   render() {
@@ -30,25 +35,26 @@ class WelcomeComponent extends Component<Props> {
         initialValues={initialValues}
         layout="horizontal"
         colon={false}
+        requiredMark={(label, info) => `${label} ${info.required ? "🥰" : ""}`}
       >
         <Row justify={"space-between"} gutter={[16, 0]}>
           <Col span={12}>
-            <Form.Item<FormValues> name="date" label="DatePicker">
-              <DatePicker onChange={this.onChange} format="DD/MM/BBBB" className="w-full" />
+            <Form.Item<FormValues> name="date1" label="DatePicker" required>
+              <DatePicker onChange={this.onChange} format="DD/MM/BBBB" className="w-full" picker="month" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item<FormValues> name="date" label="Select">
+            <Form.Item<FormValues> name="date2" label="Select" required>
               <Select className="w-full" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item<FormValues> name="date" label="InputNumber">
-              <InputNumber className="!w-full" />
+            <Form.Item<FormValues> name="date3" label="InputNumber">
+              <InputNumber className="!w-full" mode="spinner" min="0" max="3" step="0.01" />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item<FormValues> name="date" label="Input">
+            <Form.Item<FormValues> name="date4" label="Input">
               <Input className="w-full" />
             </Form.Item>
           </Col>

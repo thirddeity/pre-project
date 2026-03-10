@@ -1,14 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ConfigProvider } from "antd";
-// import thTH from "antd/locale/th_TH";
 import th from "antd/es/date-picker/locale/th_TH";
 import thTH from "antd/es/locale/th_TH";
 import buddhistEra from "dayjs/plugin/buddhistEra";
 import { RouterProvider } from "react-router/dom";
 import { router } from "./router/index.tsx";
 import dayjs from "dayjs";
-import "./index.css";
+import "./styles/index.css";
+import "./styles/icons/all.css";
 
 dayjs.locale("th_TH");
 dayjs.extend(buddhistEra);
