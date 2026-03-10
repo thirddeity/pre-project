@@ -1,18 +1,14 @@
-import { UpOutlined, DownOutlined } from "@ant-design/icons";
-import { Button, Card, Radio, type RadioGroupProps } from "antd";
+import { Card, Radio, type RadioGroupProps } from "antd";
+import Text from "antd/es/typography/Text";
 import { Component, type ReactNode } from "react";
+import type { Lookup } from "../type/radio";
 
-interface Lookup {
-  code: string | null;
-  label: ReactNode | null;
-  opt: string | null;
-}
-
-interface Props extends RadioGroupProps {
+interface Props extends Omit<RadioGroupProps, "onChange"> {
   items: Lookup[];
   selected: string | null;
   showItem?: number | null;
-  headerContent: ReactNode;
+  headerContent?: ReactNode;
+  onChange: (key: string) => void;
 }
 
 interface State {
@@ -29,7 +25,8 @@ class RadioGroup extends Component<Props, State> {
 
   render() {
     const { isVisible } = this.state;
-    const { items, showItem, headerContent, ...props } = this.props;
+    const { items, showItem, selected, headerContent, onChange, ...props } =
+      this.props;
 
     const item: Lookup[] =
       isVisible || !showItem ? items : items.slice(0, showItem ?? 2);
@@ -37,21 +34,51 @@ class RadioGroup extends Component<Props, State> {
     return (
       <div className="flex flex-col gap-4">
         {headerContent}
-        <Radio.Group {...props} vertical>
-          {item.map((item) => (
-            <Card
-              key={item.code}
-              classNames={{ body: "bg-green-200" }}
-              style={{ cursor: "pointer" }}
-            >
-              <Radio value={item.code}>{item.label}</Radio>
-            </Card>
-          ))}
+        <Radio.Group
+          {...props}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
+          vertical
+        >
+          {item.map((item) => {
+            return (
+              <Card
+                aria-rowindex={-1}
+                aria-colindex={-1}
+                key={item.code}
+                classNames={{
+                  body:
+                    selected === item.code
+                      ? "border-1 border-green-500"
+                      : "border-1 border-neutral-300",
+                }}
+                onClick={() => {
+                  onChange(item.code);
+                }}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="flex flex-col gap-2">
+                  <Radio value={item.code} className="w-full">
+                    {item.label}
+                  </Radio>
+                  {item.children}
+                </div>
+              </Card>
+            );
+          })}
 
           {showItem && (
-            <Button onClick={() => this.setState({ isVisible: !isVisible })}>
-              {isVisible ? <UpOutlined /> : <DownOutlined />}
-            </Button>
+            <Text
+              onClick={() => this.setState({ isVisible: !isVisible })}
+              className="cursor-pointer"
+            >
+              {isVisible ? (
+                <span className="text-orange-300">แสดงน้อยลง</span>
+              ) : (
+                <span className="text-green-500">แสดงเพิ่มเติม</span>
+              )}
+            </Text>
           )}
         </Radio.Group>
       </div>

@@ -1,69 +1,126 @@
-import { Component, type ReactNode } from "react";
+import { Component } from "react";
 import RadioGroup from "./components/radioGroup";
 import { Button, Form, Input, type FormProps } from "antd";
+import { withForm, type WithFormProps } from "../../hoc/withForm";
+import type { Lookup } from "./type/radio";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface Props {}
-interface Lookup {
-  code: string | null;
-  label: ReactNode | null;
-  opt: string | null;
-}
+// type Props = WithFormProps<RadioFieldType>;
+type Props = WithFormProps<RadioFieldType>;
+
 interface State {
-  selected: string | null;
   mock: Lookup[];
 }
 
 type RadioFieldType = {
-  radio?: string;
+  radio: string;
+  email: string;
+  rdm: string;
+  obtionC: string;
 };
 
 class RadioPage extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selected: null,
       mock: [
         {
           code: "PID",
           label:
             "Username เป็นเลขบัตรประชาชน/เลขผู้เสียภาษี [สำหรับชาวต่างชาติ]",
-          opt: null,
         },
         {
           code: "EMAIL",
           label: "Username เป็น E-mail ของสมาชิก",
-          opt: null,
         },
         {
           code: "RDM",
-          label: "Username และ Password เป็น Random",
-          opt: null,
+          label: "อย่ามองฟ้าต่ำ",
         },
         {
           code: "RDX",
-          label: "Username และ Password เป็น Random",
-          opt: null,
+          label: "อย่าทําหินแตก",
         },
       ],
     };
   }
 
   private renderRadioItems = () => {
-    const { mock, selected } = this.state;
+    const { form } = this.props;
+    const { mock } = this.state;
 
     return mock.map((e) => {
       if (e.code === "EMAIL") {
         return {
           ...e,
-          label: (
+          label: <div className="flex flex-col gap-2">{e.label}</div>,
+          children: (
             <>
-              {e.label}
-              {selected === "EMAIL" && (
-                <Input
-                  placeholder="please input"
-                  style={{ width: 120, marginInlineStart: 12 }}
-                />
+              {form.getFieldValue("radio") === "EMAIL" && (
+                <Form.Item
+                  name="email"
+                  rules={[{ required: true, message: "กรุณากรอก!" }]}
+                >
+                  <Input
+                    placeholder="กรุณากรอก"
+                    className="w-full"
+                    onChange={(e) =>
+                      form.setFieldValue("email", e.target.value)
+                    }
+                  />
+                </Form.Item>
+              )}
+            </>
+          ),
+        };
+      }
+      if (e.code === "RDM") {
+        return {
+          ...e,
+          label: <div className="flex flex-col gap-2">{e.label}</div>,
+          children: (
+            <>
+              {form.getFieldValue("radio") === "RDM" && (
+                <Form.Item
+                  name="rdm"
+                  rules={[{ required: true, message: "กรุณาเลือก!" }]}
+                >
+                  <RadioGroup
+                    items={[
+                      { code: "obtiona", label: "Option A" },
+                      { code: "obtionb", label: "Option B" },
+                      {
+                        code: "obtionc",
+                        label: "Option C",
+                        children: (
+                          <Form.Item
+                            name="obtionC"
+                            rules={[
+                              {
+                                required:
+                                  form.getFieldValue("rdm") === "obtionc",
+                                message: "กรุณากรอก!",
+                              },
+                            ]}
+                          >
+                            <Input
+                              placeholder="กรุณากรอก"
+                              className="w-full"
+                              onChange={(e) =>
+                                form.setFieldValue("obtionC", e.target.value)
+                              }
+                            />
+                          </Form.Item>
+                        ),
+                      },
+                    ]}
+                    onChange={(e) => {
+                      if (e !== "obtionc") form.setFieldValue("obtionC", "");
+                      form.setFieldValue("rdm", e);
+                    }}
+                    selected={form.getFieldValue("rdm")}
+                    showItem={2}
+                  />
+                </Form.Item>
               )}
             </>
           ),
@@ -73,7 +130,7 @@ class RadioPage extends Component<Props, State> {
     });
   };
 
-  private onFinish: FormProps<RadioFieldType>["onFinish"] = (values) => {
+  private onFinish = (values: RadioFieldType) => {
     console.log("Success:", values);
   };
 
@@ -84,30 +141,49 @@ class RadioPage extends Component<Props, State> {
   };
 
   render() {
-    const { selected } = this.state;
+    const { form } = this.props;
     return (
       <Form
+        form={form}
+        initialValues={{ radio: "", email: "", rdm: "", obtionC: "" }}
         name="radio-test"
         onFinish={this.onFinish}
         onFinishFailed={this.onFinishFailed}
       >
-        <Form.Item<RadioFieldType>>
-          <RadioGroup
-            headerContent={<>Header ! </>}
-            items={this.renderRadioItems()}
-            onChange={(e) => this.setState({ selected: e.target.value })}
-            selected={selected}
-            showItem={2}
-          />
+        <Form.Item<RadioFieldType> shouldUpdate>
+          {({ getFieldValue, setFieldValue }) => (
+            <Form.Item
+              name="radio"
+              rules={[{ required: true, message: "กรุณาเลือก!" }]}
+            >
+              <RadioGroup
+                headerContent={<>Radio Group ! </>}
+                items={this.renderRadioItems()}
+                onChange={(e) => setFieldValue("radio", e)}
+                selected={getFieldValue("radio")}
+                showItem={2}
+              />
+            </Form.Item>
+          )}
         </Form.Item>
         <Form.Item label={null}>
-          <Button type="primary" htmlType="submit" className="w-full">
-            Submit
-          </Button>
+          <div className="flex flex-row justify-between gap-4">
+            <Button
+              type="default"
+              className="w-full"
+              onClick={() => form.resetFields()}
+            >
+              Reset
+            </Button>
+            <Button type="primary" htmlType="submit" className="w-full">
+              Submit
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     );
   }
 }
 
-export default RadioPage;
+const RadioPageComponent = withForm(RadioPage);
+export { RadioPageComponent as RadioPage };
