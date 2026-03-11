@@ -29,8 +29,10 @@ class StepperCard extends Component<Props, State> {
           router("/welcome");
           break;
         case 1:
-          console.log("value sub =>", value);
           router("/radio-group");
+          break;
+        case 2:
+          router("/ka-test");
           break;
         default:
           break;
@@ -70,6 +72,7 @@ class StepperCard extends Component<Props, State> {
                     },
                     {
                       title: "4. กรรมการบริษัท",
+                      disabled: true,
                     },
                   ]}
                 />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout, theme, Image, Tag, Flex, Select, Button } from "antd";
+import { Layout, theme, Image, Tag, Flex, Select, Button, Card } from "antd";
 import { Outlet } from "react-router";
 import { StepperCard } from "../components/layouts/stepper";
 
@@ -11,7 +11,7 @@ const MainLayout: React.FC = () => {
   } = theme.useToken();
 
   return (
-    <Layout className="h-screen">
+    <Layout className="!min-h-screen">
       <Header className="!bg-white flex flex-row items-center justify-between">
         <div className="flex flex-row items-center">
           <Image alt="KALogo" width={140} src="images/common/logo.png" preview={false} />
@@ -46,19 +46,20 @@ const MainLayout: React.FC = () => {
         </div>
       </Header>
       <Layout>
-        <Content className="!mt-6 !mx-20 flex flex-row gap-4 justify-center">
+        <Content className="!mt-6 !mx-20  flex flex-row gap-4 justify-center">
           <StepperCard />
-          <div
+          <Card
             style={{
               padding: 24,
               minHeight: 360,
-              minWidth: 770,
+              height: "fit-content",
+              width: 900,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
           >
             <Outlet />
-          </div>
+          </Card>
         </Content>
         <Footer style={{ textAlign: "center" }}>Abbot ©{new Date().getFullYear()} Created by Abbot.tech</Footer>
       </Layout>

@@ -9,6 +9,7 @@ import { router } from "./router/index.tsx";
 import dayjs from "dayjs";
 import "./styles/index.css";
 import "./styles/icons/all.css";
+import { themeConfig } from "./configs/theme.ts";
 
 dayjs.locale("th_TH");
 dayjs.extend(buddhistEra);
@@ -33,45 +34,7 @@ const globalBuddhistLocale: typeof thTH = {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <ConfigProvider
-    theme={{
-      token: {
-        colorPrimary: "#00A850",
-        colorSuccess: "#06A87D",
-        colorWarning: "#F4B049",
-        colorError: "#E85E4E",
-        colorInfo: "#1677ff",
-
-        colorBgBase: "#ffffff",
-        colorTextBase: "#333333",
-
-        borderRadius: 8,
-        borderRadiusLG: 8,
-        borderRadiusSM: 6,
-
-        fontFamily: "KuriousLooped, Arial, Helvetica, sans-serif",
-        fontSize: 14,
-        fontSizeLG: 16,
-        fontSizeSM: 12,
-      },
-      components: {
-        Input: {
-          activeShadow: "none",
-        },
-        InputNumber: {
-          activeShadow: "none",
-        },
-        DatePicker: {
-          activeShadow: "none",
-        },
-        Select: {
-          activeOutlineColor: "none",
-        },
-      },
-    }}
-    locale={globalBuddhistLocale}
-    wave={{ disabled: true }}
-  >
+  <ConfigProvider theme={themeConfig} locale={globalBuddhistLocale} wave={{ disabled: true }}>
     <StrictMode>
       <RouterProvider router={router} />
     </StrictMode>
