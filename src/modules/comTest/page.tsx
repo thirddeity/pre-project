@@ -1,22 +1,16 @@
 import { Component } from "react";
-import RadioGroup from "./components/radioGroup";
-import { Button, Form, Input, type FormProps } from "antd";
+import { AutoComplete, Button, Form, Input, type FormProps } from "antd";
 import { withForm, type WithFormProps } from "../../hoc/withForm";
-import type { Lookup } from "./type/radio";
+import type { Lookup, RadioFieldType } from "./type/radio";
+import { DownSquareOutlined } from "@ant-design/icons";
+import RadioGroup from "../../ui/components/radioCard";
+import RdxForm from "./form/rdxForm";
 
-// type Props = WithFormProps<RadioFieldType>;
 type Props = WithFormProps<RadioFieldType>;
 
 interface State {
   mock: Lookup[];
 }
-
-type RadioFieldType = {
-  radio: string;
-  email: string;
-  rdm: string;
-  obtionC: string;
-};
 
 class RadioPage extends Component<Props, State> {
   constructor(props: Props) {
@@ -98,16 +92,37 @@ class RadioPage extends Component<Props, State> {
                               {
                                 required:
                                   form.getFieldValue("rdm") === "obtionc",
-                                message: "กรุณากรอก!",
+                                message: "กรุณากรอกเลือก!",
                               },
                             ]}
                           >
-                            <Input
-                              placeholder="กรุณากรอก"
+                            <AutoComplete
                               className="w-full"
-                              onChange={(e) =>
-                                form.setFieldValue("obtionC", e.target.value)
-                              }
+                              onChange={(e) => {
+                                form.setFieldValue("obtionC", e);
+                              }}
+                              options={[
+                                { value: "Burns Bay Road" },
+                                { value: "Downing Street" },
+                                {
+                                  value: "Wall Street",
+                                  label: (
+                                    <div className="flex flex-row justify-between">
+                                      <span>Wall Street</span>
+                                      <DownSquareOutlined
+                                        onClick={() => console.log("download")}
+                                      />
+                                    </div>
+                                  ),
+                                },
+                              ]}
+                              placeholder="กรุณากรอกเลือก"
+                              showSearch={{
+                                filterOption: (inputValue, option) =>
+                                  option!.value
+                                    .toUpperCase()
+                                    .includes(inputValue.toUpperCase()),
+                              }}
                             />
                           </Form.Item>
                         ),
@@ -122,6 +137,18 @@ class RadioPage extends Component<Props, State> {
                   />
                 </Form.Item>
               )}
+            </>
+          ),
+        };
+      }
+      if (e.code === "RDX") {
+        return {
+          ...e,
+          label: <div className="flex flex-col gap-2">{e.label}</div>,
+          children: form.getFieldValue("radio") === "RDX" && (
+            <>
+              <RdxForm form={form} />
+              <Button onClick={() => console.log("คัดลอก")}>คัดลอก</Button>
             </>
           ),
         };
@@ -145,7 +172,13 @@ class RadioPage extends Component<Props, State> {
     return (
       <Form
         form={form}
-        initialValues={{ radio: "", email: "", rdm: "", obtionC: "" }}
+        initialValues={{
+          radio: "",
+          email: "",
+          rdm: "",
+          obtionC: "",
+          cotract: [{ prefix: "", name: "", lastname: "", pid: "" }],
+        }}
         name="radio-test"
         onFinish={this.onFinish}
         onFinishFailed={this.onFinishFailed}

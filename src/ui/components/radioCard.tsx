@@ -1,7 +1,7 @@
 import { Card, Radio, type RadioGroupProps } from "antd";
 import Text from "antd/es/typography/Text";
 import { Component, type ReactNode } from "react";
-import type { Lookup } from "../type/radio";
+import type { Lookup } from "../../modules/comTest/type/radio";
 
 interface Props extends Omit<RadioGroupProps, "onChange"> {
   items: Lookup[];
