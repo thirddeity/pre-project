@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Row } from "antd";
+import { Button, Col, Flex, Form, Input, Row } from "antd";
 import { Component } from "react";
 import { withForm, type WithFormProps } from "../../hoc/withForm";
 
@@ -9,7 +9,6 @@ class KACom extends Component<WithFormProps<{ item: { name: string; age: number 
     return (
       <Form
         form={form}
-        style={{ maxWidth: 600 }}
         autoComplete="off"
         initialValues={{ items: [{ name: "", age: 100 }] }}
         onFinish={(values) => {
@@ -19,40 +18,50 @@ class KACom extends Component<WithFormProps<{ item: { name: string; age: number 
         <Form.List name="items">
           {(fields, { add, remove, move }) =>
             fields.map(({ key, name: index }) => (
-              <div key={key} className="flex flex-row gap-2 items-center">
-                {index}
-                <Button onClick={() => add({ name: "a", age: 1 })}>+</Button>
-                <Form.Item name={[index, "name"]} label="Name" noStyle>
-                  <Input onBlur={() => form.submit()}></Input>
-                </Form.Item>
-                <Form.Item name={[index, "age"]} label="Age" noStyle>
-                  <Input></Input>
-                </Form.Item>
-                <Button onClick={() => remove(index)} disabled={fields.length === 1}>
-                  -
-                </Button>
-                <Button onClick={() => move(index, 1)} disabled={fields.length === 1}>
-                  move to index 1
-                </Button>
-                <Button onClick={() => form.resetFields()} disabled={fields.length === 1}>
-                  reset
-                </Button>
-              </div>
+              <Row key={key} gutter={[8, 0]}>
+                <Col span={2}>
+                  <Button onClick={() => add({ name: "a", age: 1 })}>+</Button>
+                </Col>
+                <Col span={6}>
+                  <Form.Item name={[index, "name"]}>
+                    <Input onBlur={() => form.submit()}></Input>
+                  </Form.Item>
+                </Col>
+                <Col span={6}>
+                  <Form.Item name={[index, "age"]}>
+                    <Input></Input>
+                  </Form.Item>
+                </Col>
+                <Col span={2} className="text-end">
+                  <Button onClick={() => remove(index)} disabled={fields.length === 1}>
+                    -
+                  </Button>
+                </Col>
+                <Col span={8} className="text-center">
+                  <Button onClick={() => move(index, 1)} disabled={fields.length === 1}>
+                    move to index 1
+                  </Button>
+                </Col>
+              </Row>
             ))
           }
         </Form.List>
         <Row>
           <Col span={24}>
-            <Input.Search
-              placeholder="input search text"
-              allowClear
-              enterButton="Search"
-              size="large"
-              onSearch={() => {}}
-            />
+            <Flex gap={"middle"}>
+              <Button
+                onClick={() => form.resetFields()}
+                disabled={form.getFieldsValue().length === 1}
+                className="w-full"
+              >
+                reset
+              </Button>
+              <Button className="w-full" htmlType="submit">
+                Submit
+              </Button>
+            </Flex>
           </Col>
         </Row>
-        <Button htmlType="submit">Submit</Button>
       </Form>
     );
   }

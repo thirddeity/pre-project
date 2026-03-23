@@ -7,8 +7,8 @@ import buddhistEra from "dayjs/plugin/buddhistEra";
 import { RouterProvider } from "react-router/dom";
 import { router } from "./router/index.tsx";
 import dayjs from "dayjs";
-import "./styles/index.css";
 import "./styles/icons/all.css";
+import "./styles/index.css";
 import { themeConfig } from "./configs/theme.ts";
 
 dayjs.locale("th_TH");

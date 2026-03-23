@@ -2,7 +2,7 @@
 import { Form, type FormInstance } from "antd";
 import type { ComponentType } from "react";
 
-export interface WithFormProps<T> {
+export interface WithFormProps<T = any> {
   form: FormInstance<T>;
 }
 

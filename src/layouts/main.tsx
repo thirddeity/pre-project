@@ -49,14 +49,7 @@ const MainLayout: React.FC = () => {
         <Content className="!mt-6 !mx-20  flex flex-row gap-4 justify-center">
           <StepperCard />
           <Card
-            style={{
-              padding: 24,
-              minHeight: 360,
-              height: "fit-content",
-              width: 900,
-              background: colorBgContainer,
-              borderRadius: borderRadiusLG,
-            }}
+            className={`p-[24px] min-h-[360px] h-fit w-[900px] bg-[${colorBgContainer}] rounded-[${borderRadiusLG}]`}
           >
             <Outlet />
           </Card>

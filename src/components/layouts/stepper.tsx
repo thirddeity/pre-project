@@ -18,34 +18,63 @@ class StepperCard extends Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    this.syncStepsWithRoute();
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      this.syncStepsWithRoute();
+    }
+  }
+
+  private syncStepsWithRoute = () => {
+    const { location } = this.props;
+    const path = location.pathname;
+
+    let subIndex = 0;
+
+    if (path.includes("/welcome")) subIndex = 0;
+    else if (path.includes("/radio-group")) subIndex = 1;
+    else if (path.includes("/ka-test")) subIndex = 2;
+    else if (path.includes("/regl-standard")) subIndex = 3;
+    else {
+      subIndex = -1;
+    }
+
+    this.setState({ sub: subIndex });
+  };
+
   private onChangeMain = (value: number) => {
     this.setState({ main: value });
   };
+
   private onChangeSub = (value: number) => {
-    const { router } = this.props;
-    this.setState({ sub: value }, () => {
-      switch (value) {
-        case 0:
-          router("/welcome");
-          break;
-        case 1:
-          router("/radio-group");
-          break;
-        case 2:
-          router("/ka-test");
-          break;
-        default:
-          break;
-      }
-    });
+    const { navigate } = this.props;
+    switch (value) {
+      case 0:
+        navigate("/welcome");
+        break;
+      case 1:
+        navigate("/radio-group");
+        break;
+      case 2:
+        navigate("/ka-test");
+        break;
+      case 3:
+        navigate("/regl-standard");
+        break;
+      default:
+        break;
+    }
   };
 
   render() {
     const { main, sub } = this.state;
     return (
-      <Card className="!min-w-[250px]">
+      <Card className="!min-w-[250px] !max-w-[320px]">
         <Steps
-          classNames={{ itemRail: "hidden" }}
+          classNames={{ itemRail: "!hidden" }}
           current={main}
           onChange={this.onChangeMain}
           orientation="vertical"
@@ -58,37 +87,24 @@ class StepperCard extends Component<Props, State> {
                   current={sub}
                   onChange={this.onChangeSub}
                   className="!mt-2"
-                  classNames={{ itemTitle: "!w-[130px]" }}
                   orientation="vertical"
                   items={[
-                    {
-                      title: "1. ชื่อนายจ้าง",
-                    },
-                    {
-                      title: "2. ประเภทกิจการ",
-                    },
-                    {
-                      title: "3. ที่ตั้งสำนักงาน",
-                    },
-                    {
-                      title: "4. กรรมการบริษัท",
-                      disabled: true,
-                    },
+                    { title: "1. ชื่อนายจ้าง" },
+                    { title: "2. ประเภทกิจการ" },
+                    { title: "3. ที่ตั้งสำนักงาน" },
+                    { title: "4. เพิ่มเงื่อนไขการจ่ายเงินสมทบและประโยชน์ของเงินสมทบ" },
                   ]}
                 />
               ),
             },
-            {
-              title: "ส่วนที่ 2",
-            },
-            {
-              title: "ส่วนที่ 3",
-            },
+            { title: "ส่วนที่ 2" },
+            { title: "ส่วนที่ 3" },
           ]}
         />
       </Card>
     );
   }
 }
+
 const StepperCardComponent = withRouter(StepperCard);
 export { StepperCardComponent as StepperCard };

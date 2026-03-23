@@ -50,7 +50,7 @@ class WelcomeComponent extends Component<Props> {
           </Col>
           <Col span={12}>
             <Form.Item<FormValues> name="date3" label="InputNumber">
-              <InputNumber className="!w-full" mode="spinner" min="0" max="3" step="0.01" />
+              <InputNumber className="!w-full" mode="input" min="0" max="3" classNames={{ actions: "!hidden" }} />
             </Form.Item>
           </Col>
           <Col span={12}>
