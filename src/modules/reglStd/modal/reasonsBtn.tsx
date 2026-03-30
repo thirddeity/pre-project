@@ -1,6 +1,7 @@
 import { Button, type CheckboxOptionType } from "antd";
 import { Component } from "react";
-import TerminateReasonsModal from "../terminationReasons";
+import TerminateReasonsModal from "./terminationReasons";
+import { ErrorMessage } from "../../../ui/utils/ErrorMessage";
 
 interface State {
   reasonModal: boolean;
@@ -8,10 +9,12 @@ interface State {
 }
 
 interface Props {
-  updateIsInvalid: (hasItem: boolean) => void;
+  updateIsValid: (hasItem: boolean) => void;
+  title: string;
+  isValid: boolean;
 }
 
-class FullPayment extends Component<Props, State> {
+class ReasonsButton extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -24,19 +27,18 @@ class FullPayment extends Component<Props, State> {
     this.setState({ reasonModal: v });
   };
 
-  public validate = async (): Promise<boolean> => {
+  public validate = (): boolean => {
     const { reasonsInfo } = this.state;
-    if (reasonsInfo.length === 0) return false;
-    return true;
+    return !!reasonsInfo.length;
   };
 
   render() {
     const { reasonModal, reasonsInfo } = this.state;
-    const { updateIsInvalid } = this.props;
+    const { updateIsValid, title, isValid } = this.props;
     return (
       <div className="flex flex-col gap-2">
         <div className="flex flex-row gap-2 items-center">
-          <div className="font-bold">จ่าย 100% ยกเว้นกรณีดังต่อไปนี้ จ่าย 0%</div>
+          <div className="font-bold">{title}</div>
           <Button
             color="primary"
             variant="text"
@@ -53,7 +55,7 @@ class FullPayment extends Component<Props, State> {
             onConfirm={(reasonsInfo) => {
               this.setState({ reasonsInfo }, () => {
                 this.showModal(false);
-                updateIsInvalid(!!reasonsInfo.length);
+                updateIsValid(!!reasonsInfo.length);
               });
             }}
           />
@@ -78,9 +80,10 @@ class FullPayment extends Component<Props, State> {
             })}
           </div>
         )}
+        {!isValid && <div className="!mt-4">{ErrorMessage("กรุณาระบุเหตุสิ้นสุดสมาชิกภาพ")}</div>}
       </div>
     );
   }
 }
 
-export default FullPayment;
+export default ReasonsButton;

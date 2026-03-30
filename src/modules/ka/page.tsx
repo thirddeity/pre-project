@@ -2,7 +2,7 @@ import { Button, Col, Flex, Form, Input, Row } from "antd";
 import { Component } from "react";
 import { withForm, type WithFormProps } from "../../hoc/withForm";
 
-class KACom extends Component<WithFormProps<{ item: { name: string; age: number } }[]>> {
+class KACom extends Component<WithFormProps<{ item: [{ name: string; age: number }] }[]>> {
   render() {
     const { form } = this.props;
 

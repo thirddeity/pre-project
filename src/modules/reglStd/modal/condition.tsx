@@ -1,8 +1,7 @@
 import { Card, Divider, Modal } from "antd";
 import { Component, createRef } from "react";
-import FullPayment from "./content/full";
-import CondPayment from "./content/cond";
-import { ErrorMessage } from "../../../ui/utils/ErrorMessage";
+import ReasonsButton from "./reasonsBtn";
+import CondPayment from "./hasCond/content";
 
 interface Props {
   open: boolean;
@@ -15,7 +14,8 @@ interface State {
 }
 
 class ConditionModal extends Component<Props, State> {
-  private fullPaymentRef = createRef<FullPayment>();
+  private reasonsBtnRef = createRef<ReasonsButton>();
+  private condPaymentRef = createRef<CondPayment>();
 
   constructor(props: Props) {
     super(props);
@@ -32,10 +32,14 @@ class ConditionModal extends Component<Props, State> {
 
   private handleOk = async () => {
     const { hideModal, radioVal } = this.props;
-
-    if (radioVal === 1 && this.fullPaymentRef.current) {
-      const isValid = await this.fullPaymentRef.current.validate();
-      console.log("isValid =>", isValid);
+    if (radioVal === 1 && this.reasonsBtnRef.current) {
+      const isValid = this.reasonsBtnRef.current.validate();
+      console.log("isValid 1 =>", isValid);
+      this.setState({ isValid });
+      if (!isValid) return;
+    } else if (radioVal === 2 && this.condPaymentRef.current) {
+      const isValid = this.condPaymentRef.current.validate();
+      console.log("isValid 2 =>", isValid);
       this.setState({ isValid });
       if (!isValid) return;
     }
@@ -64,17 +68,26 @@ class ConditionModal extends Component<Props, State> {
         onCancel={this.handleCancel}
         okText="บันทึก"
         cancelText="ยกเลิก"
-        width={1000}
+        width={"95vw"}
+        classNames={{ body: "!max-h-[70vh] !overflow-y-auto" }}
         destroyOnHidden
         centered
       >
         <Card className="w-full" classNames={{ root: isValid ? "" : "!border-red-500" }}>
           {radioVal === 1 ? (
-            <FullPayment ref={this.fullPaymentRef} updateIsInvalid={(isValid) => this.setState({ isValid })} />
+            <ReasonsButton
+              ref={this.reasonsBtnRef}
+              title="จ่าย 100% ยกเว้นกรณีดังต่อไปนี้ จ่าย 0%"
+              updateIsValid={(isValid) => this.setState({ isValid })}
+              isValid={isValid}
+            />
           ) : (
-            <CondPayment />
+            <CondPayment
+              ref={this.condPaymentRef}
+              isValid={isValid}
+              updateIsValid={(isValid) => this.setState({ isValid })}
+            />
           )}
-          {!isValid && <div className="!mt-4">{ErrorMessage("กรุณาระบุเหตุสิ้นสุดสมาชิกภาพ")}</div>}
         </Card>
       </Modal>
     );
