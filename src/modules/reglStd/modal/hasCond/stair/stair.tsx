@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { Button, Col, Flex, Form, Input, InputNumber, Row, Select, Typography } from "antd";
+import { Button, Col, Flex, Form, Input, Row, Select } from "antd";
 import { Component } from "react";
 import { withForm, type WithFormProps } from "../../../../../hoc/withForm";
 import NumberInput from "../../../../../ui/components/numberInput";
