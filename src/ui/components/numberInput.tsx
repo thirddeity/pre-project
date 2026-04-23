@@ -10,7 +10,8 @@ interface NumericInputProps {
   maxValError?: string | number;
   minValError?: string | number;
   isError?: boolean;
-  onPercentBlur?: () => void;
+  onBlur?: () => void;
+  isDisabled?: boolean;
 
   allowDecimal?: boolean;
   decimalPlaces?: number;
@@ -49,7 +50,7 @@ class NumberInput extends Component<NumericInputProps, State> {
   };
 
   private handleBlur = () => {
-    const { value, valuesError, minValError, maxValError, onPercentBlur, onChange } = this.props;
+    const { value, valuesError, minValError, maxValError, onBlur, onChange } = this.props;
     let val = value !== undefined && value !== null ? String(value) : "";
 
     if (val !== "" && val !== ".") {
@@ -78,11 +79,11 @@ class NumberInput extends Component<NumericInputProps, State> {
       this.setState({ status: "" });
     }
 
-    setTimeout(() => onPercentBlur?.(), 0);
+    setTimeout(() => onBlur?.(), 0);
   };
 
   render() {
-    const { value, suffix, className, isError, allowDecimal } = this.props;
+    const { value, suffix, className, isError, allowDecimal, isDisabled = false } = this.props;
     const { status } = this.state;
     const statusError = isError || status === "error" ? "error" : "";
     return (
@@ -99,6 +100,7 @@ class NumberInput extends Component<NumericInputProps, State> {
           input: "text-end",
           suffix: "opacity-70",
         }}
+        disabled={isDisabled}
       />
     );
   }

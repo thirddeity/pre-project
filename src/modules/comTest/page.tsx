@@ -19,8 +19,7 @@ class RadioPage extends Component<Props, State> {
       mock: [
         {
           code: "PID",
-          label:
-            "Username เป็นเลขบัตรประชาชน/เลขผู้เสียภาษี [สำหรับชาวต่างชาติ]",
+          label: "Username เป็นเลขบัตรประชาชน/เลขผู้เสียภาษี [สำหรับชาวต่างชาติ]",
         },
         {
           code: "EMAIL",
@@ -50,16 +49,11 @@ class RadioPage extends Component<Props, State> {
           children: (
             <>
               {form.getFieldValue("radio") === "EMAIL" && (
-                <Form.Item
-                  name="email"
-                  rules={[{ required: true, message: "กรุณากรอก!" }]}
-                >
+                <Form.Item name="email" rules={[{ required: true, message: "กรุณากรอก!" }]}>
                   <Input
                     placeholder="กรุณากรอก"
                     className="w-full"
-                    onChange={(e) =>
-                      form.setFieldValue("email", e.target.value)
-                    }
+                    onChange={(e) => form.setFieldValue("email", e.target.value)}
                   />
                 </Form.Item>
               )}
@@ -74,10 +68,7 @@ class RadioPage extends Component<Props, State> {
           children: (
             <>
               {form.getFieldValue("radio") === "RDM" && (
-                <Form.Item
-                  name="rdm"
-                  rules={[{ required: true, message: "กรุณาเลือก!" }]}
-                >
+                <Form.Item name="rdm" rules={[{ required: true, message: "กรุณาเลือก!" }]}>
                   <RadioGroup
                     items={[
                       { code: "obtiona", label: "Option A" },
@@ -90,8 +81,7 @@ class RadioPage extends Component<Props, State> {
                             name="obtionC"
                             rules={[
                               {
-                                required:
-                                  form.getFieldValue("rdm") === "obtionc",
+                                required: form.getFieldValue("rdm") === "obtionc",
                                 message: "กรุณากรอกเลือก!",
                               },
                             ]}
@@ -109,9 +99,7 @@ class RadioPage extends Component<Props, State> {
                                   label: (
                                     <div className="flex flex-row justify-between">
                                       <span>Wall Street</span>
-                                      <DownSquareOutlined
-                                        onClick={() => console.log("download")}
-                                      />
+                                      <DownSquareOutlined onClick={() => console.log("download")} />
                                     </div>
                                   ),
                                 },
@@ -119,9 +107,7 @@ class RadioPage extends Component<Props, State> {
                               placeholder="กรุณากรอกเลือก"
                               showSearch={{
                                 filterOption: (inputValue, option) =>
-                                  option!.value
-                                    .toUpperCase()
-                                    .includes(inputValue.toUpperCase()),
+                                  option!.value.toUpperCase().includes(inputValue.toUpperCase()),
                               }}
                             />
                           </Form.Item>
@@ -161,9 +147,7 @@ class RadioPage extends Component<Props, State> {
     console.log("Success:", values);
   };
 
-  private onFinishFailed: FormProps<RadioFieldType>["onFinishFailed"] = (
-    errorInfo,
-  ) => {
+  private onFinishFailed: FormProps<RadioFieldType>["onFinishFailed"] = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
@@ -185,10 +169,7 @@ class RadioPage extends Component<Props, State> {
       >
         <Form.Item<RadioFieldType> shouldUpdate>
           {({ getFieldValue, setFieldValue }) => (
-            <Form.Item
-              name="radio"
-              rules={[{ required: true, message: "กรุณาเลือก!" }]}
-            >
+            <Form.Item name="radio" rules={[{ required: true, message: "กรุณาเลือก!" }]}>
               <RadioGroup
                 headerContent={<>Radio Group ! </>}
                 items={this.renderRadioItems()}
@@ -201,11 +182,7 @@ class RadioPage extends Component<Props, State> {
         </Form.Item>
         <Form.Item label={null}>
           <div className="flex flex-row justify-between gap-4">
-            <Button
-              type="default"
-              className="w-full"
-              onClick={() => form.resetFields()}
-            >
+            <Button type="default" className="w-full" onClick={() => form.resetFields()}>
               Reset
             </Button>
             <Button type="primary" htmlType="submit" className="w-full">

@@ -137,7 +137,7 @@ class StairInputComponent extends Component<Props, State> {
                         maxValError={100}
                         suffix="%"
                         isError={percentErrors.first}
-                        onPercentBlur={this.handlePercentBlur}
+                        onBlur={this.handlePercentBlur}
                         allowDecimal
                       />
                     </Form.Item>
@@ -221,7 +221,7 @@ class StairInputComponent extends Component<Props, State> {
                       <NumberInput
                         maxValError={100}
                         suffix="%"
-                        onPercentBlur={this.handlePercentBlur}
+                        onBlur={this.handlePercentBlur}
                         isError={percentErrors.mid[name] ?? false}
                       />
                     </Form.Item>
@@ -307,7 +307,7 @@ class StairInputComponent extends Component<Props, State> {
                       <NumberInput
                         maxValError={100}
                         suffix="%"
-                        onPercentBlur={this.handlePercentBlur}
+                        onBlur={this.handlePercentBlur}
                         isError={percentErrors.last}
                       />
                     </Form.Item>

@@ -25,11 +25,9 @@ class RadioGroup extends Component<Props, State> {
 
   render() {
     const { isVisible } = this.state;
-    const { items, showItem, selected, headerContent, onChange, ...props } =
-      this.props;
+    const { items, showItem, selected, headerContent, onChange, ...props } = this.props;
 
-    const item: Lookup[] =
-      isVisible || !showItem ? items : items.slice(0, showItem ?? 2);
+    const item: Lookup[] = isVisible || !showItem ? items : items.slice(0, showItem ?? 2);
 
     return (
       <div className="flex flex-col gap-4">
@@ -48,10 +46,7 @@ class RadioGroup extends Component<Props, State> {
                 aria-colindex={-1}
                 key={item.code}
                 classNames={{
-                  body:
-                    selected === item.code
-                      ? "border-1 border-green-500"
-                      : "border-1 border-neutral-300",
+                  body: selected === item.code ? "border-1 border-green-500" : "border-1 border-neutral-300",
                 }}
                 onClick={() => {
                   onChange(item.code);
@@ -69,10 +64,7 @@ class RadioGroup extends Component<Props, State> {
           })}
 
           {showItem && (
-            <Text
-              onClick={() => this.setState({ isVisible: !isVisible })}
-              className="cursor-pointer"
-            >
+            <Text onClick={() => this.setState({ isVisible: !isVisible })} className="cursor-pointer">
               {isVisible ? (
                 <span className="text-orange-300">แสดงน้อยลง</span>
               ) : (
